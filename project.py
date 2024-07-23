@@ -8,9 +8,9 @@ def main():
     """This will be the core of the project"""
 
     stock = get_stock()
-    customized_data, printing_data = customizer(stock)
+    customized_data = customizer(stock)
     export_data(customized_data)
-    print_graph(printing_data, stock.info["shortName"])
+    print_graph(customized_data, stock.info["shortName"])
 
 def get_stock() -> yf.Ticker: #Used try/except
     """Checks if the given stock symbol is valid, then return that ticker object,
@@ -68,7 +68,7 @@ def get_file_name() -> str : #Used regular expression
         
         print("Invalid file name")
 
-def customizer(stock: yf.Ticker) -> tuple: #Used try/except
+def customizer(stock: yf.Ticker) -> pd.DataFrame: #Used try/except
     """This function customizes how the data is collected"""
     
     periods = ["1 day", "5 days", "1 month", "3 months", "6 months", "1 year", "5 years", "max"]
@@ -120,7 +120,7 @@ def customizer(stock: yf.Ticker) -> tuple: #Used try/except
         except ValueError:
             print("--You inputted a non numeric value--")
 
-    return stock.history(interval=intervals[period_choice][interval_choice], period=periods_translator[period_choice]), stock.history(interval= "1d",period=periods_translator[period_choice])
+    return stock.history(interval=intervals[period_choice][interval_choice], period=periods_translator[period_choice])
 
 def export_data(file: pd.DataFrame) -> str: #Using pandas to export data
     """Exports the data into a csv file"""
@@ -138,10 +138,13 @@ def export_data(file: pd.DataFrame) -> str: #Using pandas to export data
 def print_graph(file: pd.DataFrame, name: str) -> None:
     """Prints a graph with range chosen by user, interval is per day"""
     
-    plt.plot(file.index, file["Close"])
+    plt.plot(file.index, file["Close"], marker='o')
     plt.title(f"Graph of {name} Stock")
     plt.xlabel("Date")
     plt.ylabel("Closing price")
+    plt.grid(True)
+    plt.xticks(rotation=90)
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":

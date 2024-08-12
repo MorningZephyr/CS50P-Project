@@ -19,7 +19,7 @@ def get_stock() -> yf.Ticker: #Used try/except
     
     print("----------------------------------------")
     while True:
-        name = input("Please enter a 4-digit stock symbol: ")
+        name = input("Please enter a stock Ticker symbol(MSFT, AAPL, etc): ")
         stock = yf.Ticker(name)
         try:
             stock.info['currentPrice']
@@ -27,7 +27,7 @@ def get_stock() -> yf.Ticker: #Used try/except
             print()
             return stock
         except KeyError:
-            print("--Invalid 4 digit symbol--")
+            print("--Invalid symbol--")
             print("----------------------------------------")
 
 def get_file_name() -> str : #Used regular expression
@@ -98,7 +98,7 @@ def customizer(stock: yf.Ticker) -> pd.DataFrame: #Used try/except
             break
 
         except IndexError:
-            print("--Your number is not between 1 and 9--")
+           print("--Your number is not between 1 and 8--")
         except ValueError:
             print("--You inputted a non numeric value--")
     
@@ -138,10 +138,10 @@ def export_data(file: pd.DataFrame) -> str: #Using pandas to export data
 def print_graph(file: pd.DataFrame, name: str) -> None:
     """Prints a graph with range chosen by user, interval is per day"""
     
-    plt.plot(file.index, file["Close"], marker='o')
-    plt.title(f"Graph of {name} Stock")
+    plt.plot(file.index, file["Close"])
+    plt.title(f"{name} Stock Performance")
     plt.xlabel("Date")
-    plt.ylabel("Closing price")
+    plt.ylabel("Closing price ($)")
     plt.grid(True)
     plt.xticks(rotation=90)
     plt.tight_layout()

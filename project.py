@@ -122,8 +122,8 @@ def customizer(stock: yf.Ticker) -> pd.DataFrame: #Used try/except
 
     return stock.history(interval=intervals[period_choice][interval_choice], period=periods_translator[period_choice])
 
-def export_data(file: pd.DataFrame) -> str: #Using pandas to export data
-    """Exports the data into a csv file"""
+def export_data(file: pd.DataFrame) -> None: #Using pandas to export data
+    """Exports the data into a csv or xlsx file"""
 
     file_name = get_file_name()
 
